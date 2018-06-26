@@ -1,0 +1,41 @@
+日志异常检测的通用做法分为四步：
+	1、日志收集 2、日志处理(模板化) 3、特征提取  4、异常检测
+
+logParsing.py:
+	功能：提取日志模板，并且将原日志文件转换成模板序列(log sequence)
+	输入：原始的日志，每一条日志一行，例如 “1117838570 2005.06.03 R02-M1-N0-C:J12-U11 2005-06-03-15.42.50.675872 R02-M1-N0-C:J12-U11 RAS KERNEL INFO instruction cache parity error corrected” （即BGL_2k.log文件）
+	输出：1.日志模板文件
+	     2.log sequence
+
+classifiers_bgl.py:
+	功能：有监督的异常检测，基于sklearn工具包，分别实现了决策树，SVM和逻辑回归异常检测。
+	输入：1.原始日志文件（即BGL_2k.log文件）
+		 2.上一步得到的log sequence （即seq_file.csv文件）
+		 3.标注，在这个程序中，标注是原始日志文件(BGL_2k.log)的第一列。这个标注是对每条日志做的标注，如果一个窗口内存在异常的日志，则认为这个窗口为异常。（文中：In BGL data, 348,460 log messages are labeled as failures, and a log sequence is marked as an anomaly if any failure logs exist in that sequence.）
+		 4.其他数值型的参数
+	输出: precision recall fscore，查看具体哪个时间窗口有异常可以修改一下代码，目前没有展示。
+
+log_clustering_bgl.py:
+    功能：实现了微软log clustering算法，通过日志来做异常检测。
+    输入：1.原始日志文件（即BGL_2k.log文件）
+		 2.上一步得到的log sequence （即seq_file.csv文件）
+		 3.标注，在这个程序中，标注是原始日志文件(BGL_2k.log)的第一列。这个标注是对每条日志做的标注，如果一个窗口内存在异常的日志，则认为这个窗口为异常。（文中：In BGL data, 348,460 log messages are labeled as failures, and a log sequence is marked as an anomaly if any failure logs exist in that sequence.）
+		 4.其他数值型的参数
+	输出: precision recall fscore，查看具体哪个时间窗口有异常可以修改一下代码，目前没有展示。
+
+PCA_bgl.py:
+    功能：实现了通过PCA做日志异常检测的功能。
+    输入：1.原始日志文件（即BGL_2k.log文件）
+		 2.上一步得到的log sequence （即seq_file.csv文件）
+		 3.标注，在这个程序中，标注是原始日志文件(BGL_2k.log)的第一列。这个标注是对每条日志做的标注，如果一个窗口内存在异常的日志，则认为这个窗口为异常。（文中：In BGL data, 348,460 log messages are labeled as failures, and a log sequence is marked as an anomaly if any failure logs exist in that sequence.）
+		 4.其他数值型的参数
+	输出: precision recall fscore，查看具体哪个时间窗口有异常可以修改一下代码，目前没有展示。
+
+
+mining_invariants_bgl.py:
+    功能：实现了ATC‘10的mining invariants。
+    输入：1.原始日志文件（即BGL_2k.log文件）
+		 2.上一步得到的log sequence （即seq_file.csv文件）
+		 3.标注，在这个程序中，标注是原始日志文件(BGL_2k.log)的第一列。这个标注是对每条日志做的标注，如果一个窗口内存在异常的日志，则认为这个窗口为异常。（文中：In BGL data, 348,460 log messages are labeled as failures, and a log sequence is marked as an anomaly if any failure logs exist in that sequence.）
+		 4.其他数值型的参数
+	输出: precision recall fscore，查看具体哪个时间窗口有异常可以修改一下代码，目前没有展示。	
